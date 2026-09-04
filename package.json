@@ -1,0 +1,31 @@
+{
+  "name": "ciiu-co",
+  "version": "1.0.0",
+  "description": "Complete Colombian CIIU Rev. 4 A.C. classification: code dictionary (502 clases) and hierarchy, generated from https://ciiu.co/api endpoints",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "ciiu-dict.json",
+    "ciiu-tree.json"
+  ],
+  "keywords": [
+    "ciiu",
+    "ciiu4",
+    "clasificador",
+    "dane",
+    "colombia",
+    "economia"
+  ],
+  "author": "Mauricio Robayo",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MauricioRobayo/ciiu-co.git"
+  }
+}
