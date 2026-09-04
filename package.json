@@ -1,6 +1,6 @@
 {
   "name": "ciiu-co",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Complete Colombian CIIU Rev. 4 A.C. classification: code dictionary (502 clases) and hierarchy",
   "type": "module",
   "main": "index.js",
