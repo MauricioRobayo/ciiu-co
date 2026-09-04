@@ -1,18 +1,34 @@
 {
   "name": "ciiu-co",
   "version": "1.0.2",
-  "description": "Complete Colombian CIIU Rev. 4 A.C. classification: code dictionary (502 clases) and hierarchy",
+  "description": "Complete Colombian CIIU Rev. 4 A.C. classification (502 clases): code dictionary, hierarchy, and ARL occupational risk classification per Decreto 768 de 2022",
   "type": "module",
   "main": "index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./arl": {
+      "types": "./arl.d.ts",
+      "import": "./arl.js"
+    },
+    "./ciiu-dict.json": "./ciiu-dict.json",
+    "./ciiu-tree.json": "./ciiu-tree.json",
+    "./risk-classification.json": "./risk-classification.json"
+  },
   "scripts": {
     "check": "node check.js"
   },
   "files": [
     "index.js",
     "index.d.ts",
+    "arl.js",
+    "arl.d.ts",
     "ciiu-dict.json",
-    "ciiu-tree.json"
+    "ciiu-tree.json",
+    "risk-classification.json"
   ],
   "keywords": [
     "ciiu",
@@ -20,7 +36,9 @@
     "clasificador",
     "dane",
     "colombia",
-    "economia"
+    "economia",
+    "arl",
+    "riesgo-laboral"
   ],
   "author": "Mauricio Robayo",
   "license": "ISC",

@@ -4,6 +4,12 @@ export interface CiiuNode {
   children?: CiiuNode[];
 }
 
+export {
+  riskClassification,
+  getRiskClassification,
+  type RiskClassification,
+} from "./arl.js";
+
 export declare const ciiuDict: Record<string, string>;
 export declare const ciiuTree: CiiuNode[];
 export declare function isCiiuCode(code: string): boolean;
