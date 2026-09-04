@@ -35,21 +35,25 @@ getRiskClassification("0111");
 // [{ risk: "2", ciiu: "0111", code: "01", description: "Cultivo de cereales …" }, …]
 ```
 
-### Subpath imports
+### Tree shaking & subpath imports
 
-The risk dataset is the largest payload (~480 KB). If you only need ARL data — or want to avoid pulling the root entry's other datasets into a plain-Node server — import the risk-only entry:
+The package is marked `sideEffects: false`, so bundlers (webpack, Turbopack, Rollup, esbuild) drop datasets you don't use: `import { ciiuDict } from "ciiu-co"` ships only the dict (~35 KB), not the tree or the risk table.
+
+For client bundles that want a dataset without relying on tree shaking — or for plain-Node servers avoiding the root entry's other datasets — each dataset has its own entry:
 
 ```ts
-import { getRiskClassification, type RiskClassification } from "ciiu-co/arl";
+import { ciiuDict, isCiiuCode } from "ciiu-co/dict";
+import { ciiuTree, type CiiuNode } from "ciiu-co/tree";
+import { getRiskClassification, type RiskClassification } from "ciiu-co/arl"; // risk table is the largest payload (~480 KB)
 ```
 
-The raw JSON files are also exported as deep imports, which is handy for client bundles where you want a specific dataset without the rest of the API:
+The raw JSON files are also exported as deep imports:
 
 ```ts
 import ciiuDict from "ciiu-co/ciiu-dict.json" with { type: "json" };
 ```
 
-Available subpaths: `./arl`, `./ciiu-dict.json`, `./ciiu-tree.json`, `./risk-classification.json`.
+Available subpaths: `./dict`, `./tree`, `./arl`, `./ciiu-dict.json`, `./ciiu-tree.json`, `./risk-classification.json`.
 
 ## Data provenance
 

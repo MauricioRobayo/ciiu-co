@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "types": "index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./index.d.ts",
@@ -13,6 +14,14 @@
     "./arl": {
       "types": "./arl.d.ts",
       "import": "./arl.js"
+    },
+    "./dict": {
+      "types": "./dict.d.ts",
+      "import": "./dict.js"
+    },
+    "./tree": {
+      "types": "./tree.d.ts",
+      "import": "./tree.js"
     },
     "./ciiu-dict.json": "./ciiu-dict.json",
     "./ciiu-tree.json": "./ciiu-tree.json",
@@ -26,6 +35,10 @@
     "index.d.ts",
     "arl.js",
     "arl.d.ts",
+    "dict.js",
+    "dict.d.ts",
+    "tree.js",
+    "tree.d.ts",
     "ciiu-dict.json",
     "ciiu-tree.json",
     "risk-classification.json"
