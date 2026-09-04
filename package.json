@@ -1,7 +1,7 @@
 {
   "name": "ciiu-co",
   "version": "1.0.0",
-  "description": "Complete Colombian CIIU Rev. 4 A.C. classification: code dictionary (502 clases) and hierarchy, generated from https://ciiu.co/api endpoints",
+  "description": "Complete Colombian CIIU Rev. 4 A.C. classification: code dictionary (502 clases) and hierarchy",
   "type": "module",
   "main": "index.js",
   "types": "index.d.ts",
