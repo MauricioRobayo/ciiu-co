@@ -1,6 +1,6 @@
 {
   "name": "ciiu-co",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Complete Colombian CIIU Rev. 4 A.C. classification (502 clases): code dictionary, hierarchy, and ARL occupational risk classification per Decreto 768 de 2022",
   "type": "module",
   "main": "index.js",
