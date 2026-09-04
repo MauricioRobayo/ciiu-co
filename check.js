@@ -1,39 +1,22 @@
-import { writeFile } from "node:fs/promises";
+// Integrity check for the committed data files. Run via `npm run check`
+// after editing ciiu-dict.json / ciiu-tree.json by hand, before publishing.
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-const BASE_URL = process.env.CIIU_BASE_URL || "https://www.ciiu.co/api";
-const MAX_ATTEMPTS = 5;
-
-async function fetchText(url) {
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-      return await res.text();
-    } catch (err) {
-      if (attempt === MAX_ATTEMPTS) {
-        throw new Error(
-          `Failed to fetch ${url} after ${MAX_ATTEMPTS} attempts: ${err.message}`,
-        );
-      }
-      const delay = 2 ** (attempt - 1) * 1000;
-      console.warn(
-        `Retry ${attempt}/${MAX_ATTEMPTS - 1} for ${url} in ${delay}ms (${err.message})`,
-      );
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
-  }
+async function readText(file) {
+  return readFile(path.join(import.meta.dirname, file), "utf8");
 }
 
 // JSON.parse reorders integer-like keys numerically, so the source order of
-// the dict must be read from the raw text and preserved during serialization
-function parseOrderedDict(text) {
+// the dict must be read from the raw text
+async function readOrderedDict() {
+  const text = await readText("ciiu-dict.json");
   const dict = JSON.parse(text);
   const orderedKeys = [...text.matchAll(/^  "(\d{4})": /gm)].map(([, k]) => k);
   assert(
     orderedKeys.length === Object.keys(dict).length &&
       [...orderedKeys].sort().join() === Object.keys(dict).sort().join(),
-    "could not recover dict key order from the response text",
+    "could not recover dict key order from the file text",
   );
   return { dict, orderedKeys };
 }
@@ -81,33 +64,16 @@ function validate(dict, orderedKeys, tree) {
 }
 
 async function main() {
-  const [dictText, treeText] = await Promise.all([
-    fetchText(`${BASE_URL}/ciiu-dict.json`),
-    fetchText(`${BASE_URL}/ciiu-tree.json`),
+  const [{ dict, orderedKeys }, treeText] = await Promise.all([
+    readOrderedDict(),
+    readText("ciiu-tree.json"),
   ]);
-
-  const { dict, orderedKeys } = parseOrderedDict(dictText);
   const tree = JSON.parse(treeText);
 
   validate(dict, orderedKeys, tree);
 
-  const dictBody = orderedKeys
-    .map((code) => `  ${JSON.stringify(code)}: ${JSON.stringify(dict[code])}`)
-    .join(",\n");
-
-  await Promise.all([
-    writeFile(
-      path.join(import.meta.dirname, "ciiu-dict.json"),
-      `{\n${dictBody}\n}\n`,
-    ),
-    writeFile(
-      path.join(import.meta.dirname, "ciiu-tree.json"),
-      `${JSON.stringify(tree, null, 2)}\n`,
-    ),
-  ]);
-
   console.log(
-    `Wrote ciiu-dict.json (${orderedKeys.length} codes) and ciiu-tree.json (${tree.length} sections) from ${BASE_URL}`,
+    `OK: ciiu-dict.json (${orderedKeys.length} codes) and ciiu-tree.json (${tree.length} sections) are consistent`,
   );
 }
 

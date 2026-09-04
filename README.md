@@ -25,16 +25,17 @@ isCiiuCode("4690"); // true — one of the 10 clases missing from DANE's hierarc
 
 This package is the canonical, versioned artifact of Colombia's official **CIIU Rev. 4 A.C.** classification, curated by the [ciiu.co](https://ciiu.co) project and validated against DANE's (the national statistics agency) authoritative `clase_service` records.
 
-Why not consume DANE's services directly: their hierarchy and group endpoints are **missing 10 official clases** (`3290`, `3320`, `3520`, `3530`, `3900`, `4690`, `8521`, `8522`, `8523`, `8560`), contain a duplicated division in section P, and a stray code under group `422` — so their tree yields an incomplete, incorrect classification. This dataset corrects all of those against DANE's authoritative clase records, and its integrity is enforced on every regeneration (502 entries, set-equal leaves, matching descriptions, sections A–U).
+Why not consume DANE's services directly: their hierarchy and group endpoints are **missing 10 official clases** (`3290`, `3320`, `3520`, `3530`, `3900`, `4690`, `8521`, `8522`, `8523`, `8560`), contain a duplicated division in section P, and a stray code under group `422` — so their tree yields an incomplete, incorrect classification. This dataset corrects all of those against DANE's authoritative clase records, and `npm run check` enforces its integrity (502 entries, set-equal leaves, matching descriptions, sections A–U).
 
 Note: codes like `0010`/`0020` (asalariados/pensionados) used internally by RUES registry data are **not** official CIIU clases and are intentionally excluded.
 
 ## Updating the data
 
+The JSON files in this repo are the canonical artifact — edit them directly (e.g. to adopt a new CIIU revision), then:
+
 ```bash
-npm run build # regenerates the JSON files (fetched from https://www.ciiu.co/api until that endpoint is retired; override with CIIU_BASE_URL)
-git diff      # review changes
-git commit -am "chore: refresh data"
+npm run check # asserts dict/tree integrity and lexicographic key order
+git commit -am "fix(data): …"
 npm version patch
 npm publish
 ```
